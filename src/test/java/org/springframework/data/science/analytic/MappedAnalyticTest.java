@@ -27,9 +27,6 @@ public class MappedAnalyticTest {
 		analytic = new DummyMappedAnalytic(new DummyInputMapper(), new DummyOutputMapper());
 	}
 
-	/**
-	 * @see XD-1418
-	 */
 	@Test
 	public void testShouldNotAllowNullInputMapper() {
 
@@ -39,9 +36,6 @@ public class MappedAnalyticTest {
 		new DummyMappedAnalytic(null, new DummyOutputMapper());
 	}
 
-	/**
-	 * @see XD-1418
-	 */
 	@Test
 	public void testShouldNotAllowNullOutputMapper() {
 
@@ -51,9 +45,7 @@ public class MappedAnalyticTest {
 		new DummyMappedAnalytic(new DummyInputMapper(), null);
 	}
 
-	/**
-	 * @see XD-1418
-	 */
+
 	@Test
 	public void testEvaluateDummyMappedAnalytic() {
 
