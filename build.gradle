@@ -6,10 +6,35 @@ sourceCompatibility = 1.7
 version = '1.0.0.SNAPSHOT'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Spring Data Science', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Spring Data Science', 'Implementation-Version': version
     }
 }
 
+eclipse {
+	project { natures += 'org.springframework.ide.eclipse.core.springnature' }
+	}
+
+// Include project specific settings
+task eclipseSettings(type: Copy) {
+	from rootProject.files(
+		"eclipse/org.eclipse.jdt.ui.prefs",
+		"eclipse/de.loskutov.anyedit.AnyEditTools.prefs")
+		into project.file('.settings/')
+	}
+
+task eclipseJdtPrepare(type: Copy) {
+	from rootProject.file("eclipse/org.eclipse.jdt.core.prefs")
+	into project.file(".settings/")
+}
+
+task cleanEclipseJdtUi(type: Delete) {
+	delete project.file(".settings/org.eclipse.jdt.ui.prefs")
+	delete project.file(".settings/org.eclipse.jdt.core.prefs")
+}
+
+tasks["eclipseJdt"].dependsOn(eclipseJdtPrepare)
+tasks["cleanEclipse"].dependsOn(cleanEclipseJdtUi)
+tasks["eclipse"].dependsOn(eclipseSettings)
 
 
 repositories {
