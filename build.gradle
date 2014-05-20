@@ -14,5 +14,14 @@ repositories {
 	maven { url 'http://repo.spring.io/plugins-release' }	
 }
 
+ext {
+	springVersion = '4.0.3.RELEASE'
+	slf4jVersion = '1.7.6'
+	jpmmlEvaluatorVersion = '1.1.3'
+}
+
 dependencies {
+    compile "org.jpmml:pmml-evaluator:$jpmmlEvaluatorVersion"
+    compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    compile "org.springframework:spring-core:$springVersion"
 }
