@@ -10,12 +10,12 @@ public class DummyOutputMapper implements
 		OutputMapper<Map<String, Object>, Map<String, Object>, DummyMappedAnalytic, Map<String, Object>> {
 
 	/**
-	 * Ordering of fields in the resulting {@link org.springframework.xd.tuple.Tuple} can be different than the ordering
-	 * of the input {@code Tuple}.
+	 * Ordering of fields in the resulting Object can be different than the ordering
+	 * of the input Object.
 	 * 
-	 * @param analytic the {@link org.springframework.xd.analytics.ml.Analytic} that can be used to retrieve mapping
+	 * @param analytic the {@link Analytic} that can be used to retrieve mapping
 	 *          information.
-	 * @param input the input for this {@link org.springframework.xd.analytics.ml.Analytic} that could be used to build
+	 * @param input the input for this {@link Analytic} that could be used to build
 	 *          the model {@code O}.
 	 * @param modelOutput the raw unmapped model output {@code MO}.
 	 * @return

@@ -11,7 +11,7 @@ public class DummyMappedAnalytic
 		MappedAnalytic<Map<String, Object>, Map<String, Object>, Map<String, Object>, Map<String, Object>, DummyMappedAnalytic> {
 
 	/**
-	 * Creates a new {@link org.springframework.xd.analytics.ml.MappedAnalytic}.
+	 * Creates a new {@link MappedAnalytic}.
 	 * 
 	 * @param inputMapper must not be {@literal null}.
 	 * @param outputMapper must not be {@literal null}.

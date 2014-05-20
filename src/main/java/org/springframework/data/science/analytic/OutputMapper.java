@@ -31,9 +31,9 @@ public interface OutputMapper<I, O, A, MO> extends Mapper {
 	/**
 	 * Maps the model-output {@code MO} to an appropriate output {@code O}.
 	 * 
-	 * @param analytic the {@link org.springframework.xd.analytics.ml.Analytic} that can be used to retrieve mapping
+	 * @param analytic the {@link Analytic} that can be used to retrieve mapping
 	 *        information.
-	 * @param input the input for this {@link org.springframework.xd.analytics.ml.Analytic} that could be used to build
+	 * @param input the input for this {@link Analytic} that could be used to build
 	 *        the model {@code O}.
 	 * @param modelOutput the raw unmapped model output {@code MO}.
 	 * @return the actual output of the {@code Analytic} {@code A}.

@@ -29,7 +29,7 @@ public interface InputMapper<I, A, MI> extends Mapper{
 
 	/**
 	 * Maps the given input {@code I} into an appropriate model-input {@code MI} for the given
-	 * {@link org.springframework.xd.analytics.ml.Analytic} {@code A}.
+	 * {@link Analytic} {@code A}.
 	 * 
 	 * @param analytic
 	 * @param input
