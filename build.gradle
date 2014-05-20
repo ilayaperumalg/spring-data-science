@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.7
 version = '1.0.0.SNAPSHOT'
@@ -8,6 +9,8 @@ jar {
         attributes 'Implementation-Title': 'Spring Data Science', 'Implementation-Version': version
     }
 }
+
+
 
 repositories {
 	mavenCentral()
@@ -21,7 +24,20 @@ ext {
 }
 
 dependencies {
-    compile "org.jpmml:pmml-evaluator:$jpmmlEvaluatorVersion"
+
+	compile "com.google.guava:guava:$guavaVersion"
+ 	compile "org.springframework:spring-core:$springVersion"
+ 	compile "org.jpmml:pmml-evaluator:$jpmmlEvaluatorVersion"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-    compile "org.springframework:spring-core:$springVersion"
+    
+    runtime "log4j:log4j:$log4jVersion"
+	runtime	"org.slf4j:jcl-over-slf4j:$slf4jVersion"
+	runtime	"org.slf4j:slf4j-log4j12:$slf4jVersion"
+	
+	// Testing
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+
 }
