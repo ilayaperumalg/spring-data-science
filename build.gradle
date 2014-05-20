@@ -48,6 +48,7 @@ dependencies {
  	compile "org.jpmml:pmml-evaluator:$jpmmlEvaluatorVersion"
 	compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 	compile "com.google.guava:guava:$guavaVersion"
+	compile "org.apache.commons:commons-exec:$commonsExecVersion"
 
 	runtime "log4j:log4j:$log4jVersion"
 	runtime	"org.slf4j:jcl-over-slf4j:$slf4jVersion"
