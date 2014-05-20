@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.7
+version = '1.0.0.SNAPSHOT'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Spring Data Science', 'Implementation-Version': version
+    }
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'http://repo.spring.io/plugins-release' }	
+}
+
+dependencies {
+}
