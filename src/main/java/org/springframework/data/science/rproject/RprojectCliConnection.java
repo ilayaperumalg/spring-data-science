@@ -18,6 +18,7 @@ package org.springframework.data.science.rproject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,65 +26,107 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 
+import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Thomas Darimont
  */
-public class RprojectCliConnection implements RprojectConnection {
-
-	private final String rprojectCommand = "Rscript";
-
-	private String scriptLocation;
-
-	public RprojectCliConnection() {
-	}
-
-	private RprojectCliConnection(String scriptLocation) {
-		this.scriptLocation = scriptLocation;
-	}
+public class RprojectCliConnection extends AbstractRprojectConnection {
 
 	@Override
-	public String eval(String command) {
+	protected RprojectResult doEvalInScriptContext(String initScriptPath, String expression) {
 
-		CommandLine cmdLine = new CommandLine(rprojectCommand);
-
-		if (scriptLocation != null) {
-			cmdLine.addArguments("-e 'source(\"${scriptName}\")'", false);
-		}
-
-		cmdLine.addArguments("-e '${command}'", false);
-
-		String result = null;
+		RScriptCommandLine cmd = new RScriptCommandLine(initScriptPath, expression);
 
 		try {
-			File file = ResourceUtils.getFile(scriptLocation);
+			cmd.execute();
+			return new RprojectResult(cmd.getCommandOutput());
+		}
+		catch (Exception ex) {
+			return new RprojectResult(ex, cmd.getCommandOutput());
+		}
+	}
 
-			Map<String, String> substitutionMap = new HashMap<String, String>();
-			substitutionMap.put("scriptName", file.getAbsolutePath());
-			substitutionMap.put("command", command);
-			cmdLine.setSubstitutionMap(substitutionMap);
+	static class RScriptCommandLine {
 
-			DefaultExecutor exec = new DefaultExecutor();
-			exec.setWorkingDirectory(new File("."));
+		private static final String RSCRIPT_COMMAND = "Rscript";
+
+		private final String initScriptPath;
+
+		private final String expression;
+
+		private String commandOutput;
+
+		public RScriptCommandLine(String initScriptPath, String expression) {
+
+			Assert.isTrue(StringUtils.hasText(initScriptPath) || StringUtils.hasText(expression),
+					"At least initScriptPath or expressions must not be null or empty!");
+
+			this.initScriptPath = initScriptPath;
+			this.expression = expression;
+		}
+
+		public String getCommandOutput() {
+			return commandOutput;
+		}
+
+		public void execute() throws Exception {
+
+			CommandLine cmdLine = createCommandLine();
+
+			prepareArguments(cmdLine);
+
+			execute(cmdLine);
+		}
+
+
+		private CommandLine createCommandLine() {
+			return new CommandLine(RSCRIPT_COMMAND);
+		}
+
+
+		private void execute(CommandLine cmdLine) throws Exception {
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+
+			DefaultExecutor exec = new DefaultExecutor();
+			exec.setWorkingDirectory(new File("."));
 			exec.setStreamHandler(streamHandler);
-
-			exec.execute(cmdLine);
-
-			result = outputStream.toString();
+			try {
+				exec.execute(cmdLine);
+			}
+			finally {
+				this.commandOutput = outputStream.toString();
+			}
 		}
-		catch (Exception ex) {
-			throw new RuntimeException(ex);
+
+
+		private void prepareArguments(CommandLine cmdLine) throws FileNotFoundException {
+
+			Map<String, String> substitutionMap = new HashMap<String, String>();
+			if (initScriptPath != null) {
+
+				//we "source" the given scriptLocation to potentially enrich the context of the r-session.
+				cmdLine.addArguments("-e 'source(\"${scriptLocation}\")'", false);
+
+				substitutionMap.put("scriptLocation", ResourceUtils.getFile(initScriptPath).getAbsolutePath());
+			}
+
+			if (expression != null) {
+				/*
+				 * In order to capture the output from stdout we wrap the command in a 'cat' function. We additionally wrap it
+				 * with a closure in order to be able to execute multiple expressions potentially delimited via ';' at once.
+				 * The value of the last expression is returned.
+				 */
+				cmdLine.addArguments("-e 'cat((function(){${command}})())'", false);
+
+				substitutionMap.put("command", expression);
+			}
+
+			cmdLine.setSubstitutionMap(substitutionMap);
 		}
-
-		return result;
-	}
-
-	@Override
-	public RprojectConnection forScript(String scriptLocation) {
-		return new RprojectCliConnection(scriptLocation);
 	}
 }

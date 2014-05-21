@@ -1,3 +1,4 @@
+
 package org.springframework.data.science.pmml;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -28,23 +29,25 @@ public class PlainPmmlEvaluatorTests {
 
 		assertPmmlModelProducesExpectedOutput("./models/pmml/iris-flower-classification-naive-bayes-1.pmml.xml",
 				new HashMap<String, Object>() {
+
 					{
-						put("Sepal.Length", 6.4);
-						put("Sepal.Width", 3.2);
-						put("Petal.Length", 4.5);
-						put("Petal.Width", 1.5);
-					}
-				}, "versicolor");
+				put("Sepal.Length", 6.4);
+				put("Sepal.Width", 3.2);
+				put("Petal.Length", 4.5);
+				put("Petal.Width", 1.5);
+			}
+		}, "versicolor");
 
 		assertPmmlModelProducesExpectedOutput("./models/pmml/iris-flower-classification-naive-bayes-1.pmml.xml",
 				new HashMap<String, Object>() {
+
 					{
-						put("Sepal.Length", 6.9);
-						put("Sepal.Width", 3.1);
-						put("Petal.Length", 5.4);
-						put("Petal.Width", 2.1);
-					}
-				}, "virginica");
+				put("Sepal.Length", 6.9);
+				put("Sepal.Width", 3.1);
+				put("Petal.Length", 5.4);
+				put("Petal.Width", 2.1);
+			}
+		}, "virginica");
 	}
 
 	private void assertPmmlModelProducesExpectedOutput(String pmmlModelPath, Map<String, Object> input,
@@ -89,6 +92,6 @@ public class PlainPmmlEvaluatorTests {
 		FieldName targetName = modelEvaluator.getTargetField();
 		Object targetValue = results.get(targetName);
 
-		assertThat(targetValue, is((Object) expectedOutput));
+		assertThat(targetValue, is(expectedOutput));
 	}
 }

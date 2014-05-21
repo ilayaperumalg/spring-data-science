@@ -1,4 +1,7 @@
-library(pmml)
+options(warn=-1) #suppress warning messages
+suppressPackageStartupMessages(library('pmml')) #suppress loading library message for dependend libraries
+require(pmml,quietly=TRUE) #suppress loading library message
+
 
 #Splitts the given dataset in a training dataset(trainset) and test dataset(testset)
 splitDataFrame <- function(dataframe, seed = NULL, n = trainSize) {

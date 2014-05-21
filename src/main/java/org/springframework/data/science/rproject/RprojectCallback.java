@@ -19,7 +19,7 @@ package org.springframework.data.science.rproject;
 /**
  * @author Thomas Darimont
  */
-public interface RprojectCallback {
+public interface RprojectCallback<T> {
 
-	<O> O executeInR(RprojectConnection connection);
+	T doInR(RprojectConnection connection) throws Exception;
 }
