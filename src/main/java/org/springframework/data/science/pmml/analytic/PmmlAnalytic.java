@@ -170,7 +170,7 @@ public class PmmlAnalytic<I, O> extends
 	 * 
 	 * @return
 	 */
-	Model getSelectedModel() {
+	public Model getSelectedModel() {
 		return getModel(this.modelName);
 	}
 

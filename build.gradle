@@ -1,9 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'maven'
+
+group = 'org.springframework.data'
 
 sourceCompatibility = 1.7
-version = '1.0.0.SNAPSHOT'
+version = '1.0.0.BUILD-SNAPSHOT'
 jar {
     manifest {
 		attributes 'Implementation-Title': 'Spring Data Science', 'Implementation-Version': version
