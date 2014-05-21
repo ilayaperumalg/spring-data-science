@@ -21,5 +21,11 @@ package org.springframework.data.science.rproject;
  */
 public interface RprojectOperations {
 
-	String executeScript(String scriptName, RprojectCallback rprojectCallback);
+	<T> T execute(RprojectCallback<T> rprojectCallback);
+
+	<T> T eval(String expression, Class<T> resultType);
+
+	<T> T evalScript(String scriptLocation, Class<T> resultType);
+
+	<T> T evalInScriptContext(final String scriptLocation, final String expression, final Class<T> resultType);
 }

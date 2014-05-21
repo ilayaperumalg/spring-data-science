@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,12 +16,35 @@
 
 package org.springframework.data.science.rproject;
 
+
 /**
+ *
  * @author Thomas Darimont
  */
-public interface RprojectConnection {
+public class RprojectResult {
 
-	<T> T eval(String expression, Class<T> resultType);
+	private Object output;
 
-	<T> T evalInScriptContext(String initScriptPath, String expression, Class<T> resultType);
+	private Exception exception;
+
+	public RprojectResult(Object output) {
+		this(null, output);
+	}
+
+	public RprojectResult(Exception exception, Object output) {
+		this.exception = exception;
+		this.output = output;
+	}
+
+	public Object getOutput() {
+		return output;
+	}
+
+	public boolean isOk() {
+		return exception == null;
+	}
+
+	public Exception getException() {
+		return exception;
+	}
 }
